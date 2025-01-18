@@ -17,4 +17,5 @@ const config = {
     ]
 };
 
-new Game(config);
+new Phaser.Game(config);
+
