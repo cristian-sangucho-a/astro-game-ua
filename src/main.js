@@ -18,3 +18,4 @@ const config = {
 };
 
 new Game(config);
+
