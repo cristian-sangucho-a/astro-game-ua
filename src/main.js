@@ -1,10 +1,11 @@
 import Phaser from "phaser";
-import StartAstroOrtografia from "./scenes/StartAstroOrtografia";
+import AstroSinonimosScene from "./scenes/AstroSinonimosScene"; // Ajusta la ruta de importación
 import Preloader from "./Preloader"; // Ajusta la ruta de importación
 
 // More information about config: https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config = {
     type: Phaser.AUTO,
+    parent: "phaser-container",
     width: 800,
     height: 500,
     scale: {
@@ -17,7 +18,7 @@ const config = {
             gravity: { y: 0 },
         },
     },
-    scene: [StartAstroOrtografia],
+    scene: [Preloader, AstroSinonimosScene], // Ajusta el orden de las escenas
 };
 
 new Phaser.Game(config);
