@@ -5,7 +5,11 @@ export default {
         "./src/**/*.{js,jsx,ts,tsx,html}", // Aplica a todos los archivos JavaScript, TypeScript y HTML en el directorio src
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                header: "#8B97C7",
+            },
+        },
     },
     plugins: [],
 };
