@@ -1,21 +1,3 @@
-// Configuración inicial de Phaser
-/*const config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: false
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};*/
-
 //const game = new Phaser.Game(config);
 import { Scene } from "phaser";
 // Definición de la clase AstroSinonimosScene
