@@ -16,4 +16,5 @@ const config = {
     scene: [AstroSinonimosScene],
 };
 
-new Phaser.Game(config);
+new Game(config);
+
