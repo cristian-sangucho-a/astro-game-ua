@@ -582,3 +582,29 @@ video {
 .p-2 {
   padding: 0.5rem;
 }
+
+.p-96 {
+  padding: 24rem;
+}
+
+.p-60 {
+  padding: 15rem;
+}
+
+.p-36 {
+  padding: 9rem;
+}
+
+.p-40 {
+  padding: 10rem;
+}
+
+.px-40 {
+  padding-left: 10rem;
+  padding-right: 10rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
