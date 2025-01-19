@@ -5,62 +5,88 @@
         <link rel="icon" type="image/png" href="/favicon.png" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Astro Games</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+
         <link href="src/output.css" rel="stylesheet" />
     </head>
-    <body class="px-48 py-10">
-        <header class="px-10 bg-header p-2">
-            <img src="src\assets\logo_usakids.png" alt="" />
+    <body class="grid grid-cols-12 gap-4 px-20">
+        <header class="col-span-10 col-start-2 bg-header p-1">
+            <img
+                class="h-12"
+                src="src/assets/logo_usakids.png"
+                alt="Logo UsaKids"
+            />
         </header>
-        <main class="p-12">
-            <div>
-                <img src="src\assets\espacio-fondo.png" alt="" class="" />
-                <img src="src\assets\espacio-fondo.png" alt="" class="" />
-                <div>
-                    <div>
-                        <h1></h1>
-                        <p>asdas</p>
-                        <p>asdas</p>
-                    </div>
-                    <div>
-                        <img src="" alt="" />
-                    </div>
+        <main
+            class="col-span-8 col-start-3 grid-cols-12 grid bg-space-background bg-cover"
+            style="padding: 2rem"
+        >
+            <div class="col-span-8 col-start-1 flex flex-col">
+                <div class="col-span-3 rounded-lg px-12 bg-header text-center">
+                    <h1 class="font-ibm-plex-mono font-bold text-xl p-2">
+                        Astro Ortografía
+                    </h1>
                 </div>
-                <div>
-                    <div>
-                        <img src="" alt="" />
-                    </div>
-                    <div>
-                        <img src="" alt="" />
-                    </div>
-                    <div>
-                        <img src="" alt="" />
-                    </div>
+                <p
+                    class="text-justify col-span-7 col-start-2 font-ibm-plex-mono text-base py-14 text-white"
+                    style="padding-right: 4rem"
+                >
+                    Arrasa con los asteroides que amenacen tu nave. Identifica
+                    el asteroide que contiene la palabra escrita correctamente y
+                    sigue tu camino hasta llegar al destino.
+                </p>
+            </div>
+            <div class="col-span-4 col-start-9 row-start-1 mt-12">
+                <img
+                    class="h-40 object-contain"
+                    src="src/assets/Astro ortografia.png"
+                    style="height: 14rem"
+                    alt="Astro Ortografía"
+                />
+            </div>
+
+            <div class="col-span-12 flex justify-between items-center">
+                <div class="flex-1 text-left">
+                    <img
+                        style="height: 6rem"
+                        src="src/assets/left.png"
+                        alt=""
+                    />
+                </div>
+                <div class="flex-1 flex justify-center items-center">
+                    <img class="h-28" src="src/assets/play.png" alt="" />
+                </div>
+
+                <div class="flex-1 flex text-right">
+                    <img
+                        class="flex-2 text-right"
+                        src="src/assets/right.png"
+                        alt=""
+                        style="margin-left: auto; height: 6rem"
+                    />
                 </div>
             </div>
         </main>
-    </body>
-</html>
-<!-- <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="icon" type="image/png" href="/favicon.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Astro Games</title>
-        <link rel="stylesheet" href="/style.css" />
-    </head>
-
-    <body>
-        <header class="h-20 w-full">
-            <p>Header</p>
-        </header>
-        <div id="app">
-            <div id="phaser-container"></div>
-        </div>
-        <footer class="h-20 w-full">
-            <p>Footer</p>
+        <footer
+            class="py-12 col-span-10 col-start-2 bg-footer flex justify-between items-center"
+        >
+            <div class="flex gap-4 p-3">
+                <img src="src/assets/fb.png" alt="" class="w-8 h-8" />
+                <img src="src/assets/lin.png" alt="" class="w-8 h-8" />
+                <img src="src/assets/youtube.png" alt="" class="w-8 h-8" />
+            </div>
+            <div class="flex-grow flex justify-center">
+                <p class="font-ibm-plex-mono text-white text-center">
+                    UsaKids®<br />
+                    Derechos reservados<br />
+                    2024
+                </p>
+            </div>
+            <div></div>
+            <div></div>
         </footer>
-        <script type="module" src="/src/main.js"></script>
     </body>
 </html>
- -->

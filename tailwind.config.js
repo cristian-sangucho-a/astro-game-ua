@@ -8,6 +8,13 @@ export default {
         extend: {
             colors: {
                 header: "#8B97C7",
+                footer: "#242C4C",
+            },
+            backgroundImage: {
+                "space-background": "url('/src/assets/espacio-fondo.jpg')", // Define tu imagen de fondo personalizada
+            },
+            fontFamily: {
+                "ibm-plex-mono": ['"IBM Plex Mono"', "monospace"], // Define la fuente personalizada
             },
         },
     },
