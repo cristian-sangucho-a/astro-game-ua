@@ -5,7 +5,6 @@ export class Player extends Physics.Arcade.Image {
     
     // Player states: waiting, start, can_move
     state = "waiting";
-    propulsion_fire = null;
     scene = null;
     bullets = null;
 
@@ -14,9 +13,6 @@ export class Player extends Physics.Arcade.Image {
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
-
-        this.propulsion_fire = this.scene.add.sprite(this.x - 32, this.y, "propulsion-fire");
-        this.propulsion_fire.play("fire");
 
         // Bullets group to create pool
         this.bullets = this.scene.physics.add.group({
@@ -28,7 +24,6 @@ export class Player extends Physics.Arcade.Image {
 
     start() {
         this.state = "start";
-        const propulsion_fires_trail = [];
 
         // Effect to move the player from left to right
         this.scene.tweens.add({
