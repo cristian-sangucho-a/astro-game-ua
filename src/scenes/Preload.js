@@ -6,7 +6,7 @@ export class Preload extends Phaser.Scene {
     preload() {
         this.load.image('nave', 'src/assets/Nave.png');
         this.load.image('asteroide', 'src/assets/Meteorito.png');
-        this.load.image('misil', 'src/assets/misil.png');
+        this.load.image('misil', 'src/assets/misil.png'); 
         this.load.image('fondo', 'src/assets/Espacio_fondo.png');
     }
 

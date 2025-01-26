@@ -16,8 +16,10 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.lectorPantalla = null;
         this.contadorDisparos = 0; // Contador de disparos
         this.contadorAciertos = 0; // Contador de aciertos
+        this.contadorFallos = 0; // Contador de fallos
         this.textoContador = null; // Texto para mostrar el contador de disparos
         this.textoAciertos = null; // Texto para mostrar el contador de aciertos
+        this.textoFallos = null
         this.preguntaActual = null; // Pregunta actual (sinónimo)
         this.sinonimoCorrecto = null; // Sinónimo correcto para la pregunta
         this.textoPregunta = null; // Texto para mostrar la pregunta en pantalla
@@ -28,6 +30,8 @@ export class AstroSinonimosScene extends Phaser.Scene {
             { pregunta: "Feliz", correcto: "Contento", incorrectos: ["Triste", "Enojado"] }
         ];
         this.preguntasDisponibles = [];
+        this.progressBarInicial = document.getElementById('progress-bar');
+        this.progressBarInicial.style.width = `0%`;
     }
 
     create() {
@@ -39,7 +43,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         bg.setAlpha(0.6);
     
         // Crear nave
-        this.nave = new Nave(this, this.carriles[this.carrilActual], 450, 'nave');
+        this.nave = new Nave(this, this.carriles[this.carrilActual], 550, 'nave');
 
         // Crear asteroides
         this.asteroides = this.physics.add.group();
@@ -73,7 +77,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         // Crear grupo de disparos
         this.disparos = this.physics.add.group({
             classType: Misil, // Especifica la clase que se usará para los disparos
-            maxSize: 2, // Número máximo de disparos en el grupo
+            maxSize: 4, // Número máximo de disparos en el grupo empieza en 0
             runChildUpdate: true // Asegura que se llame a update en cada disparo
         });
     
@@ -104,6 +108,13 @@ export class AstroSinonimosScene extends Phaser.Scene {
             fill: '#00ff00', // Color verde para los aciertos
             fontFamily: 'Arial'
         });
+
+        // Mostrar contador de aciertos
+        this.textoFallos = this.add.text(10, 475, 'Fallos: 0', {
+            fontSize: '24px',
+            fill: '#00ff00', // Color verde para los aciertos
+            fontFamily: 'Arial'
+        });
     
         // Crear un contenedor para los textos de la pregunta
         this.contenedorPregunta = this.add.container(this.game.config.width / 2, 20);
@@ -130,17 +141,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
     
         // Anunciar la pregunta inicial
         this.anunciar(`¿Qué palabra le corresponde al siguiente sinónimo? ${this.preguntaActual}`);
-    
-        // Botón de reinicio
-        const botonReiniciar = document.createElement('button');
-        botonReiniciar.innerText = 'Reiniciar Juego';
-        botonReiniciar.id = 'boton-reiniciar';
-        document.body.appendChild(botonReiniciar);
-    
-        // Añadir un evento al botón
-        botonReiniciar.addEventListener('click', () => {
-            this.reiniciarJuego();
-        });
+        
     }
 
     obtenerTextoAsteroides() {
@@ -158,12 +159,17 @@ export class AstroSinonimosScene extends Phaser.Scene {
     generarNuevaPregunta() {
     
         if (this.preguntasDisponibles.length === 0) {
+            this.progressBarInicial.style.width = `100%`;
             alert('¡Juego terminado! Felicidades.');
             this.anunciar('¡Juego completado! Presiona reiniciar para jugar de nuevo.');
+            this.reiniciarContadores();
             this.physics.pause();
             this.scene.restart();
-            if (this.reiniciarJuego){ this.contadorDisparos = 0 
-                this.contadorAciertos = 0; }
+            if (this.reiniciarJuego){ 
+                this.contadorDisparos = 0 
+                this.contadorAciertos = 0
+                this.contadorFallos = 0
+            }
             return;
         }
 
@@ -208,6 +214,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
             disparo.setData('activo', true);
 
             // Incrementar y actualizar el contador de disparos
+            this.anunciar('Disparo realizado, te quedan ' + (3 - this.contadorDisparos) + ' disparos');
             this.contadorDisparos++;
             
             this.actualizarContador();
@@ -224,23 +231,50 @@ export class AstroSinonimosScene extends Phaser.Scene {
             if (asteroide.texto === this.sinonimoCorrecto) {
                 this.contadorAciertos++; // Incrementar el contador de aciertos
                 this.actualizarContadorAciertos(); // Actualizar el texto del contador
+                document.getElementById('hit-counter').textContent = this.contadorAciertos;
                 this.anunciar(`¡Lo lograste, sinónimo encontrado! Aciertos: ${this.contadorAciertos}`);
                 this.generarNuevaPregunta(); // Generar nueva pregunta
                 this.anunciar(`Nueva pregunta: ¿Qué palabra le corresponde al siguiente sinónimo? ${this.preguntaActual}`);
             } else {
+                this.contadorFallos++;
+                this.actualizarContadorFallos();
+                document.getElementById('miss-counter').textContent = this.contadorFallos;
                 this.anunciar(`Fallaste. ${asteroide.texto} no es el sinónimo de ${this.preguntaActual}`);
             }
 
             asteroide.destroy();
         }
     }
+    // En la clase AstroSinonimosScene
+    destroy() {
+        // Limpiar el botón si es necesario
+        if (this.botonReiniciar) {
+            this.botonReiniciar.removeListener('click');
+            this.botonReiniciar.destroy();
+        }
+        super.destroy();
+    }
 
     actualizarContador() {
         this.textoContador.setText(`Disparos: ${this.contadorDisparos}`);
+        
     }
 
     actualizarContadorAciertos() {
         this.textoAciertos.setText(`Aciertos: ${this.contadorAciertos}`);
+        document.getElementById('hit-counter').textContent = this.contadorAciertos;
+        // Calcular progreso basado en aciertos
+        const totalPreguntas = this.preguntasOriginales.length;
+        const progreso = (this.contadorAciertos / totalPreguntas) * 100;
+        const progressBar = document.getElementById('progress-bar');
+        if (progressBar) {
+            progressBar.style.width = `${progreso}%`;
+        }
+    }
+
+    actualizarContadorFallos() {
+        this.textoFallos.setText(`Fallos: ${this.contadorFallos}`);
+        document.getElementById('miss-counter').textContent = this.contadorFallos;
     }
 
     update() {
@@ -265,6 +299,15 @@ export class AstroSinonimosScene extends Phaser.Scene {
         if (asteroide) {
             this.anunciar(`Asteroide con la palabra: ${asteroide.texto}`);
         }
+    }
+
+    reiniciarContadores() {
+        this.contadorDisparos = 0;
+        this.contadorAciertos = 0;
+        this.contadorFallos = 0;
+        this.actualizarContador();
+        this.actualizarContadorAciertos();
+        this.actualizarContadorFallos();
     }
 
     configurarAccesibilidad() {
