@@ -6,7 +6,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
     constructor() {
         super({ key: 'AstroSinonimosScene' });
         this.nave = null;
-        this.carriles = [200, 400, 600]; // Carriles en las posiciones X
+        this.carriles = [133, 266, 399, 532, 665]; // Arreglo para almacenar las posiciones X de los carriles
         this.carrilActual = 1; // Índice del carril inicial (centro)
         this.asteroides = null;
         this.disparos = null;
@@ -25,9 +25,9 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.textoPregunta = null; // Texto para mostrar la pregunta en pantalla
         this.preguntasUtilizadas = []; // Arreglo para almacenar las preguntas ya utilizadas
         this.preguntasOriginales = [
-            { pregunta: "Velocidad", correcto: "Rapidez", incorrectos: ["Lentitud", "Distancia"] },
-            { pregunta: "Casa", correcto: "Hogar", incorrectos: ["Jardín", "Edificio"] },
-            { pregunta: "Feliz", correcto: "Contento", incorrectos: ["Triste", "Enojado"] }
+            { pregunta: "Velocidad", correcto: "Rapidez", incorrectos: ["Lentitud", "Distancia", "Altura", "Presicion"] },
+            { pregunta: "Casa", correcto: "Hogar", incorrectos: ["Jardín", "Edificio", "Altura", "Presicion"] },
+            { pregunta: "Feliz", correcto: "Contento", incorrectos: ["Triste", "Enojado", "Altura", "Presicion"] }
         ];
         this.preguntasDisponibles = [];
         this.progressBarInicial = document.getElementById('progress-bar');
@@ -43,7 +43,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         bg.setAlpha(0.6);
     
         // Crear nave
-        this.nave = new Nave(this, this.carriles[this.carrilActual], 550, 'nave');
+        this.nave = new Nave(this, this.carriles[this.carrilActual], 500, 'nave');
 
         // Crear asteroides
         this.asteroides = this.physics.add.group();
@@ -60,14 +60,17 @@ export class AstroSinonimosScene extends Phaser.Scene {
             fontSize: '32px',
             fill: '#ffffff',
             fontFamily: 'Arial',
-            align: 'center'
+            align: 'center',
         }).setOrigin(0.5, 0);
 
         this.textoPregunta2 = this.add.text(0, 35, '', {
             fontSize: '32px',
             fill: '#ffffff',
             fontFamily: 'Arial',
-            align: 'center'
+            align: 'center',
+            stroke: '#000000',
+            strokeThickness: 3,
+                backgroundColor: '#74BCAC',
         }).setOrigin(0.5, 0);
         this.contenedorPregunta.add([this.textoPregunta1, this.textoPregunta2]);
 
@@ -96,25 +99,13 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.teclaEspacio = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     
         // Mostrar contador de disparos
-        this.textoContador = this.add.text(10, 450, 'Disparos: 0', {
+        this.textoContador = this.add.text(10, 550, 'Disparos efectuados: 0', {
             fontSize: '24px',
             fill: '#ffffff',
             fontFamily: 'Arial'
         });
     
-        // Mostrar contador de aciertos
-        this.textoAciertos = this.add.text(10, 425, 'Aciertos: 0', {
-            fontSize: '24px',
-            fill: '#00ff00', // Color verde para los aciertos
-            fontFamily: 'Arial'
-        });
-
-        // Mostrar contador de aciertos
-        this.textoFallos = this.add.text(10, 475, 'Fallos: 0', {
-            fontSize: '24px',
-            fill: '#00ff00', // Color verde para los aciertos
-            fontFamily: 'Arial'
-        });
+        
     
         // Crear un contenedor para los textos de la pregunta
         this.contenedorPregunta = this.add.container(this.game.config.width / 2, 20);
@@ -128,7 +119,10 @@ export class AstroSinonimosScene extends Phaser.Scene {
                 fontSize: '32px',
                 fill: '#ffffff',
                 fontFamily: 'Arial',
-                align: 'center'
+                align: 'center',
+                stroke: '#000000',
+                strokeThickness: 3,
+                backgroundColor: '#74BCAC',
             }
         ).setOrigin(0.5, 0); // Centrar el texto horizontalmente
     
@@ -180,6 +174,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
 
         // Asignar palabras a los asteroides
         const palabras = [pregunta.correcto, ...pregunta.incorrectos];
+        
         Phaser.Utils.Array.Shuffle(palabras);
 
         // Limpiar asteroides y sus textos
@@ -187,13 +182,23 @@ export class AstroSinonimosScene extends Phaser.Scene {
     
         // Crear asteroides con las palabras asignadas
         this.asteroides.clear(true, true); // Limpiar asteroides anteriores
-        for (let i = 0; i < 3; i++) {
-            const asteroide = new Asteroide(this, this.carriles[i], 150, 'asteroide');
-            asteroide.setImmovable(true);
-            asteroide.setScale(0.7);
-            asteroide.body.setSize(asteroide.width * 0.7, asteroide.height * 0.7);
-            asteroide.setTexto(palabras[i]); // Asignar palabra al asteroide
-            this.asteroides.add(asteroide);
+        for (let i = 0; i < palabras.length; i++) {
+            if ((i%2) != 0) {
+                const asteroide = new Asteroide(this, this.carriles[i], 180, 'asteroide');
+                asteroide.setImmovable(true);
+                asteroide.setScale(0.7);
+                asteroide.body.setSize(asteroide.width * 0.9, asteroide.height * 0.9);
+                asteroide.setTexto(palabras[i]); // Asignar palabra al asteroide
+                this.asteroides.add(asteroide);
+            } else {
+                const asteroide = new Asteroide(this, this.carriles[i], 150, 'asteroide');
+                asteroide.setImmovable(true);
+                asteroide.setScale(0.7);
+                asteroide.body.setSize(asteroide.width * 0.7, asteroide.height * 0.7);
+                asteroide.setTexto(palabras[i]); // Asignar palabra al asteroide
+                this.asteroides.add(asteroide);
+            }
+            
         }
     
         // Actualizar el texto de la pregunta en el contenedor

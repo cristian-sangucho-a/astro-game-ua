@@ -19,12 +19,11 @@ export class Asteroide extends Phaser.Physics.Arcade.Sprite {
         this.texto = texto;
         if (this.textoObjeto) this.textoObjeto.destroy();
         
-        this.textoObjeto = this.scene.add.text(this.x, this.y + 50, texto, {
+        this.textoObjeto = this.scene.add.text(this.x, this.y , texto, {
             fontSize: '20px',
-            fill: '#ffffff',
             fontFamily: 'Arial',
-            stroke: '#000000',
-            strokeThickness: 3
+            backgroundColor: '#242C4C',
+            color: '#FFA500',
         }).setOrigin(0.5);
     }
 
