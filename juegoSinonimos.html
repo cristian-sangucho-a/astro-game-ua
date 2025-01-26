@@ -4,50 +4,52 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Astro Ortografía</title>
+    <title>Astro Sinónimos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="src/output.css" rel="stylesheet" />
 </head>
-<body class="flex flex-col h-screen bg-[url('src/assets/space-bg.jpg')] bg-cover text-white">
-    <header class="flex items-center bg-header p-4">
-        <img src="src/assets/logo_usakids.png" alt="Logo UsaKids" class="w-12 h-12 mr-4" />
-        <h1 class="text-xl font-bold text-white">Astro Ortografía</h1>
+<body class="grid grid-cols-12 gap-4 px-20">
+    <header class="col-span-10 col-start-2 bg-header p-1">
+        <img class="h-12" 
+        src="src/assets/logo_usakids.png" 
+        alt="Logo UsaKids" />
     </header>
-    <main class="flex flex-1">
-        <!-- Contenedor Phaser -->
-        <div id="phaser-container" class="flex-1 flex flex-col justify-center items-center">
-            <h2 class="text-4xl font-bold mb-6">Astro Ortografía</h2>
-            <button class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-4 px-8 rounded-full flex items-center space-x-2 mb-4">
-                <span class="material-icons text-3xl">play_arrow</span>
-                <span>Reanudar</span>
-            </button>
-            <div class="flex space-x-4">
-                <button class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full">
-                    <span class="material-icons">info</span>
-                </button>
-                <button class="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full">
-                    <span class="material-icons">help</span>
-                </button>
+    <main class="col-span-10 col-start-2 grid grid-cols-2 gap-4 flex-col">
+        <section class="bg-gradient-to-b from-gray-800 to-gray-900 text-white col-span-6 p-2 rounded-xl flex flex-col items-center justify-center">
+            <h1 class="text-4xl font-bold text-green-300 mb-4">Astro Sinónimos</h1>
+            <button class="bg-blue-600 text-white text-2xl font-bold py-4 px-6 rounded-full shadow-lg">▶ Reanudar</button>
+        </section>
+        <section class="bg-cover bg-center bg-no-repeat col-span-4 col-start-7 p-6 rounded-xl flex flex-col items-center bg-space-background bg-cover">
+            <img src="src/assets/avatar.png" alt="Personaje" class="w-24 h-24 rounded-full mb-4" />
+            <h2 class="text-xl font-bold text-green-300">Cristian Zambrano</h2>
+            <div class="w-full bg-white rounded-full h-4 mt-4">
+                <div class="bg-purple-600 h-4 rounded-full" style="width: 60%;"></div>
             </div>
-        </div>
-        <!-- Sidebar -->
-        <aside class="w-1/4 bg-gray-800 bg-opacity-75 p-4 flex flex-col items-center">
-            <img src="src/assets/avatar.png" alt="Avatar" class="w-32 h-32 rounded-full mb-4" />
-            <p class="font-semibold mb-2 text-xl">Cristian Zambrano</p>
-            <div class="w-3/4 bg-gray-700 h-2 rounded-full mb-4 relative">
-                <div class="bg-purple-500 h-full w-3/5 rounded-full"></div>
+            <div class="flex gap-4 mt-6">
+                <div class="flex flex-col items-center">
+                    <div class="bg-green-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold">✓</div>
+                    <p class="mt-2 text-lg text-white">4</p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <div class="bg-red-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold">✘</div>
+                    <p class="mt-2 text-lg text-white">0</p>
+                </div>
             </div>
-            <div class="flex space-x-4">
-                <div class="bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl">4</div>
-                <div class="bg-red-500 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl">0</div>
-            </div>
-        </aside>
+        </section>
     </main>
-    <footer class="bg-gray-800 bg-opacity-75 text-white text-center p-4">
-        <p>UsaKids&reg; Derechos Reservados 2024</p>
-        <div class="flex justify-center space-x-4 mt-2">
-            <a href="#" class="text-white">F</a>
-            <a href="#" class="text-white">I</a>
-            <a href="#" class="text-white">Y</a>
+    <footer class="col-start-2 col-span-10 flex bg-footer items-center">
+        <div class="flex gap-4">
+            <img src="src/assets/fb.png" alt="" class="w-8 h-8" />
+            <img src="src/assets/lin.png" alt="" class="w-8 h-8" />
+            <img src="src/assets/youtube.png" alt="" class="w-8 h-8" />
+        </div>
+        <div class="flex-1 text-center">
+            <p class="font-ibm-plex-mono text-white">
+                UsaKids®<br />
+                Derechos reservados<br />
+                2024
+            </p>
         </div>
     </footer>
 </body>
