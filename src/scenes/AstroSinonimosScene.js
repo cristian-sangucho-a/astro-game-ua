@@ -266,7 +266,6 @@ export class AstroSinonimosScene extends Phaser.Scene {
     }
 
     actualizarContadorAciertos() {
-        this.textoAciertos.setText(`Aciertos: ${this.contadorAciertos}`);
         document.getElementById('hit-counter').textContent = this.contadorAciertos;
         // Calcular progreso basado en aciertos
         const totalPreguntas = this.preguntasOriginales.length;
@@ -278,7 +277,6 @@ export class AstroSinonimosScene extends Phaser.Scene {
     }
 
     actualizarContadorFallos() {
-        this.textoFallos.setText(`Fallos: ${this.contadorFallos}`);
         document.getElementById('miss-counter').textContent = this.contadorFallos;
     }
 
