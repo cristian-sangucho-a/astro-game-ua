@@ -25,9 +25,9 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.textoPregunta = null; // Texto para mostrar la pregunta en pantalla
         this.preguntasUtilizadas = []; // Arreglo para almacenar las preguntas ya utilizadas
         this.preguntasOriginales = [
-            { pregunta: "Velocidad", correcto: "Rapidez", incorrectos: ["Lentitud", "Distancia", "Altura", "Presicion"] },
-            { pregunta: "Casa", correcto: "Hogar", incorrectos: ["Jardín", "Edificio", "Altura", "Presicion"] },
-            { pregunta: "Feliz", correcto: "Contento", incorrectos: ["Triste", "Enojado", "Altura", "Presicion"] }
+            { pregunta: "Velocidad", correcto: "Rapidez", incorrectos: ["Lentitud", "Distancia", "Altura", "Presición"] },
+            { pregunta: "Casa", correcto: "Hogar", incorrectos: ["Jardín", "Edificio", "Altura", "Presición"] },
+            { pregunta: "Feliz", correcto: "Contento", incorrectos: ["Triste", "Enojado", "Altura", "Presición"] }
         ];
         this.preguntasDisponibles = [];
         this.progressBarInicial = document.getElementById('progress-bar');
@@ -318,7 +318,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         if (canvas) {
             canvas.setAttribute('tabindex', '0');
             canvas.setAttribute('role', 'application');
-            canvas.setAttribute('aria-label', 'Juego de nave espacial con tres carriles y asteroides');
+            canvas.setAttribute('aria-label', 'Juego de nave espacial con cinco carriles y asteroides');
             canvas.focus();
             this.lectorPantalla = document.createElement('div');
             this.lectorPantalla.setAttribute('aria-live', 'polite');
