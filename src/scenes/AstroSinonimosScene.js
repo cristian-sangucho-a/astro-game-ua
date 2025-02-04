@@ -7,7 +7,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         super({ key: 'AstroSinonimosScene' });
         this.nave = null;
         this.carriles = [133, 266, 399, 532, 665]; // Arreglo para almacenar las posiciones X de los carriles
-        this.carrilActual = 1; // Índice del carril inicial (centro)
+        this.carrilActual = 2; // Índice del carril inicial (centro)
         this.asteroides = null;
         this.disparos = null;
         this.teclaIzquierda = null;
@@ -32,11 +32,16 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.preguntasDisponibles = [];
         this.progressBarInicial = document.getElementById('progress-bar');
         this.progressBarInicial.style.width = `0%`;
+        
     }
 
     create() {
-
+        // Configurar preguntas al inicio
+        this.preguntasDisponibles = Phaser.Utils.Array.Shuffle([...this.preguntasOriginales]);
+        
+        // Configurar accesibilidad primero
         this.configurarAccesibilidad();
+
         // Fondo
         const bg = this.add.image(0, 0, 'fondo').setOrigin(0, 0);
         bg.setDisplaySize(this.game.config.width, this.game.config.height);
@@ -47,17 +52,13 @@ export class AstroSinonimosScene extends Phaser.Scene {
 
         // Crear asteroides
         this.asteroides = this.physics.add.group();
-
-        // Configurar preguntas
-        this.preguntasDisponibles = Phaser.Utils.Array.Shuffle([...this.preguntasOriginales]);
         
-        // Contenedor de pregunta DEBE CREARSE ANTES de generar la primera pregunta
+        // Crear contenedor de pregunta
         this.contenedorPregunta = this.add.container(this.game.config.width / 2, 20);
-        // Anunciar pregunta INICIAL
-        this.anunciar(`Nueva pregunta: ${this.preguntaActual}. Opciones: ${this.obtenerTextoAsteroides()}`);
-        // Elementos de texto DEBEN INICIALIZARSE UNA SOLA VEZ
-        this.textoPregunta1 = this.add.text(0, 0, '', {
-            fontSize: '32px',
+        
+        // Crear texto de pregunta
+        this.textoPregunta1 = this.add.text(0, 0, "Pregunta",{
+            fontSize: '24px',
             fill: '#ffffff',
             fontFamily: 'Arial',
             align: 'center',
@@ -70,8 +71,9 @@ export class AstroSinonimosScene extends Phaser.Scene {
             align: 'center',
             stroke: '#000000',
             strokeThickness: 3,
-                backgroundColor: '#74BCAC',
+            backgroundColor: '#74BCAC',
         }).setOrigin(0.5, 0);
+
         this.contenedorPregunta.add([this.textoPregunta1, this.textoPregunta2]);
 
         // Generar primera pregunta
@@ -79,9 +81,9 @@ export class AstroSinonimosScene extends Phaser.Scene {
     
         // Crear grupo de disparos
         this.disparos = this.physics.add.group({
-            classType: Misil, // Especifica la clase que se usará para los disparos
-            maxSize: 4, // Número máximo de disparos en el grupo empieza en 0
-            runChildUpdate: true // Asegura que se llame a update en cada disparo
+            classType: Misil,
+            maxSize: 4,
+            runChildUpdate: true
         });
     
         // Colisiones
@@ -97,6 +99,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.teclaIzquierda = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.teclaDerecha = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         this.teclaEspacio = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.teclaEsc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     
         // Mostrar contador de disparos
         this.textoContador = this.add.text(10, 550, 'Disparos efectuados: 0', {
@@ -104,38 +107,16 @@ export class AstroSinonimosScene extends Phaser.Scene {
             fill: '#ffffff',
             fontFamily: 'Arial'
         });
-    
-        
-    
-        // Crear un contenedor para los textos de la pregunta
-        this.contenedorPregunta = this.add.container(this.game.config.width / 2, 20);
-    
-        // Texto de la pregunta (primera línea)
-        this.textoPregunta1 = this.add.text(
-            0, // Posición X relativa al contenedor
-            0, // Posición Y relativa al contenedor
-            '¿Qué palabra le corresponde al siguiente sinónimo?',
-            {
-                fontSize: '32px',
-                fill: '#ffffff',
-                fontFamily: 'Arial',
-                align: 'center',
-                stroke: '#000000',
-                strokeThickness: 3,
-                backgroundColor: '#74BCAC',
-            }
-        ).setOrigin(0.5, 0); // Centrar el texto horizontalmente
-    
-
-        // Agregar ambos textos al contenedor
-        this.contenedorPregunta.add([this.textoPregunta1, this.textoPregunta2]);
-    
-        // Configurar accesibilidad
-        this.configurarAccesibilidad();
-    
-        // Anunciar la pregunta inicial
-        this.anunciar(`¿Qué palabra le corresponde al siguiente sinónimo? ${this.preguntaActual}`);
-        
+        this.botonPausa = this.add.image(this.game.config.width -50, this.game.config.height - 50, 'pausa')
+        .setInteractive()
+        .setScale(0.8)
+        .on('pointerdown', () => {
+            this.anunciar('Juego pausado. Presiona ESC para continuar.');
+            this.scene.pause('AstroSinonimosScene');
+            this.scene.launch('PausaScene', { 
+                parentScene: this 
+            });
+        });
     }
 
     obtenerTextoAsteroides() {
@@ -150,20 +131,73 @@ export class AstroSinonimosScene extends Phaser.Scene {
         this.scene.restart();
     }
 
-    generarNuevaPregunta() {
+
+    mostrarPopupCorrecto(textoCorrecto) {
+        // Crear texto de feedback visual
+        const textoPopup = this.add.text(
+            this.game.config.width / 2,
+            this.game.config.height / 2,
+            '¡Correcto!\n' + textoCorrecto,
+            {
+                fontSize: '34px',
+                fill: '#00FF00',
+                backgroundColor: '',
+                padding: { x: 20, y: 10 },
+                align: 'center'
+            }
+        )
+        .setOrigin(0.5)
+        .setDepth(1000);
     
+        // Crear elemento ARIA para lectores de pantalla
+        const ariaPopup = document.createElement('div');
+        ariaPopup.setAttribute('aria-live', 'assertive');
+        ariaPopup.textContent = `¡Correcto! ${textoCorrecto} es el sinónimo correcto.`;
+       
+    
+        // Eliminar después de 4 segundos
+        this.time.delayedCall(4000, () => {
+            textoPopup.destroy();
+        });
+    }
+
+    mostrarPopupIncorrecto(textoIncorrecto) {
+        // Crear texto de feedback visual
+        const textoPopup = this.add.text(
+            this.game.config.width / 2,
+            this.game.config.height / 2,
+            '¡INCORRECTO!\n' + textoIncorrecto,
+            {
+                fontSize: '48px',
+                fill: '#FF0000',
+                backgroundColor: '',
+                padding: { x: 20, y: 10 },
+                align: 'center'
+            }
+        )
+        .setOrigin(0.5)
+        .setDepth(1000);
+    
+        // Crear elemento ARIA para lectores de pantalla
+        const ariaPopup = document.createElement('div');
+        ariaPopup.setAttribute('aria-live', 'assertive');
+        ariaPopup.textContent = `Incorrecto. ${textoIncorrecto} no es el sinónimo correcto.`;
+    
+        // Eliminar después de 4 segundos
+        this.time.delayedCall(4000, () => {
+            textoPopup.destroy();
+        });
+    }
+
+    generarNuevaPregunta() {
+        // Verificar si hay preguntas disponibles
         if (this.preguntasDisponibles.length === 0) {
             this.progressBarInicial.style.width = `100%`;
-            alert('¡Juego terminado! Felicidades.');
-            this.anunciar('¡Juego completado! Presiona reiniciar para jugar de nuevo.');
+            this.anunciar(`¡Juego completado! Has obtenido ${this.contadorAciertos} aciertos. 
+                Presiona reiniciar para jugar de nuevo.`);
             this.reiniciarContadores();
             this.physics.pause();
             this.scene.restart();
-            if (this.reiniciarJuego){ 
-                this.contadorDisparos = 0 
-                this.contadorAciertos = 0
-                this.contadorFallos = 0
-            }
             return;
         }
 
@@ -174,39 +208,36 @@ export class AstroSinonimosScene extends Phaser.Scene {
 
         // Asignar palabras a los asteroides
         const palabras = [pregunta.correcto, ...pregunta.incorrectos];
-        
         Phaser.Utils.Array.Shuffle(palabras);
 
-        // Limpiar asteroides y sus textos
+        // Limpiar asteroides anteriores
         this.asteroides.clear(true, true);
     
-        // Crear asteroides con las palabras asignadas
-        this.asteroides.clear(true, true); // Limpiar asteroides anteriores
+        // Crear nuevos asteroides
         for (let i = 0; i < palabras.length; i++) {
-            if ((i%2) != 0) {
-                const asteroide = new Asteroide(this, this.carriles[i], 180, 'asteroide');
-                asteroide.setImmovable(true);
-                asteroide.setScale(0.7);
-                asteroide.body.setSize(asteroide.width * 0.9, asteroide.height * 0.9);
-                asteroide.setTexto(palabras[i]); // Asignar palabra al asteroide
-                this.asteroides.add(asteroide);
-            } else {
-                const asteroide = new Asteroide(this, this.carriles[i], 150, 'asteroide');
-                asteroide.setImmovable(true);
-                asteroide.setScale(0.7);
-                asteroide.body.setSize(asteroide.width * 0.7, asteroide.height * 0.7);
-                asteroide.setTexto(palabras[i]); // Asignar palabra al asteroide
-                this.asteroides.add(asteroide);
-            }
-            
+            const asteroide = new Asteroide(
+                this, 
+                this.carriles[i], 
+                i % 2 === 0 ? 150 : 180, 
+                'asteroide'
+            );
+            asteroide.setImmovable(true);
+            asteroide.setScale(0.7);
+            asteroide.body.setSize(asteroide.width * 0.8, asteroide.height * 0.8);
+            asteroide.setTexto(palabras[i]);
+            this.asteroides.add(asteroide);
         }
     
-        // Actualizar el texto de la pregunta en el contenedor
+        // Actualizar texto de pregunta
         if (this.textoPregunta2) {
-            this.textoPregunta2.setText(`${this.preguntaActual}`);
+            this.textoPregunta2.setText(`¿Qué sinónimo corresponde a: ${this.preguntaActual}?`);
         }
-        this.anunciar(`Nueva pregunta: ${this.preguntaActual}. Opciones: ${this.obtenerTextoAsteroides()}`);
+
+        // Anunciar la nueva pregunta
+        const opciones = this.obtenerTextoAsteroides();
+        const mensajeAnuncio = `Nueva pregunta: ¿Qué sinónimo corresponde a: ${this.preguntaActual}? Las opciones son: ${opciones}`;
         
+        this.anunciar(mensajeAnuncio);
     }
 
     disparar() {
@@ -231,23 +262,33 @@ export class AstroSinonimosScene extends Phaser.Scene {
         if (disparo.getData('activo')) {
             disparo.setData('activo', false);
             disparo.destroy();
-
+    
             // Verificar si el asteroide impactado es el correcto
             if (asteroide.texto === this.sinonimoCorrecto) {
-                this.contadorAciertos++; // Incrementar el contador de aciertos
-                this.actualizarContadorAciertos(); // Actualizar el texto del contador
-                document.getElementById('hit-counter').textContent = this.contadorAciertos;
-                this.anunciar(`¡Lo lograste, sinónimo encontrado! Aciertos: ${this.contadorAciertos}`);
-                this.generarNuevaPregunta(); // Generar nueva pregunta
-                this.anunciar(`Nueva pregunta: ¿Qué palabra le corresponde al siguiente sinónimo? ${this.preguntaActual}`);
+                this.contadorAciertos++;
+                this.actualizarContadorAciertos();
+                
+                // Mostrar popup y anunciar
+                this.mostrarPopupCorrecto(asteroide.texto);
+                this.anunciar(`¡Correcto! ${asteroide.texto} es el sinónimo de ${this.preguntaActual}.`);
+    
+                // Retrasar la siguiente acción
+                this.time.delayedCall(4000, () => {
+                    asteroide.destroy();
+                    this.generarNuevaPregunta();
+                    this.anunciar(`Nueva pregunta: ${this.preguntaActual}. Opciones: ${this.obtenerTextoAsteroides()}`);
+                });
             } else {
                 this.contadorFallos++;
                 this.actualizarContadorFallos();
-                document.getElementById('miss-counter').textContent = this.contadorFallos;
-                this.anunciar(`Fallaste. ${asteroide.texto} no es el sinónimo de ${this.preguntaActual}`);
+                
+                // Mostrar popup y anunciar
+                this.mostrarPopupIncorrecto(asteroide.texto);
+                this.anunciar(`Incorrecto. ${asteroide.texto} no es el sinónimo de ${this.preguntaActual}.`);
+    
+                // Destruir el asteroide inmediatamente
+                asteroide.destroy();
             }
-
-            asteroide.destroy();
         }
     }
     // En la clase AstroSinonimosScene
@@ -282,6 +323,17 @@ export class AstroSinonimosScene extends Phaser.Scene {
 
     update() {
         if (this.scene.isPaused()) return; // Detener controles si está pausado
+    
+        // Añadir comprobación de tecla ESC
+        if (Phaser.Input.Keyboard.JustDown(this.teclaEsc)) {
+            this.anunciar('Juego pausado. Presiona ESC para continuar.');
+            this.scene.pause('AstroSinonimosScene');
+            this.scene.launch('PausaScene', { 
+                parentScene: this 
+            });
+        }
+    
+        // Resto del código de update existente
         if (Phaser.Input.Keyboard.JustDown(this.teclaIzquierda) && this.carrilActual > 0) {
             this.carrilActual--;
             this.nave.mover(this.carriles, this.carrilActual);
@@ -291,7 +343,7 @@ export class AstroSinonimosScene extends Phaser.Scene {
             this.nave.mover(this.carriles, this.carrilActual);
             this.anunciarAsteroideApuntado();
         }
-
+    
         if (Phaser.Input.Keyboard.JustDown(this.teclaEspacio)) {
             this.disparar();
         }
@@ -300,7 +352,8 @@ export class AstroSinonimosScene extends Phaser.Scene {
     anunciarAsteroideApuntado() {
         const asteroide = this.asteroides.getChildren()[this.carrilActual];
         if (asteroide) {
-            this.anunciar(`Asteroide con la palabra: ${asteroide.texto}`);
+            this.anunciar(`Te has movido al carril ${this.carrilActual + 1} de ${this.carriles.length}. 
+                El asteroide en este carril dice: ${asteroide.texto}`);
         }
     }
 
