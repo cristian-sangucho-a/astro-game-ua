@@ -1,71 +1,157 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Astro Sinónimos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link href="src/output.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
-    <script type="module" src="src/main.js"></script>
-</head>
-<body class="grid grid-cols-12 gap-4 px-20">
-    <header class="col-span-10 col-start-2 bg-header p-1" role="banner">
-        <a href="index.html">
-            <img class="h-12" src="src/assets/logo_usakids.png" alt="Logo UsaKids" tabindex="0" />
-        </a>
-    </header>
-    <main class="col-span-10 col-start-2 grid grid-cols-2 gap-4 flex-col" role="main">
-        <section class="col-span-6 p-2 rounded-xl flex flex-col items-center justify-center" aria-label="Juego">
-            <div id="phaser-container" tabindex="0" role="application" aria-label="Zona de juego"></div>
-        </section>
-        <section class="bg-cover bg-center bg-no-repeat col-span-4 col-start-7 p-6 rounded-xl flex flex-col items-center bg-space-background bg-cover" aria-labelledby="player-name">
-            <img src="src/assets/avatar.png" alt="Avatar del jugador" class="w-24 h-24 rounded-full mb-4" tabindex="0" />
-            <h2 id="player-name" class="text-xl font-bold text-green-300">Cristian Zambrano</h2>
-            
-            <!-- Barra de progreso accesible -->
-            <div class="w-full bg-white rounded-full h-4 mt-4" 
-                 role="progressbar" 
-                 aria-valuemin="0" 
-                 aria-valuemax="100" 
-                 aria-valuenow="0" 
-                 aria-label="Progreso del jugador">
-                <div id="progress-bar" class="bg-purple-600 h-4 rounded-full" tabindex="0" style="width: 0%;"></div>
-            </div>
-
-            <div class="flex gap-4 mt-6" role="group" aria-label="Marcador de puntuación">
-                <div class="flex flex-col items-center" tabindex="0" role="status" aria-label="Aciertos">
-                    <div class="bg-green-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold">✓</div>
-                    <p class="mt-2 text-lg text-white"><span id="hit-counter" class="value">0</span></p>
-                </div>
-                <div class="flex flex-col items-center" tabindex="0" role="status" aria-label="Errores">
-                    <div class="bg-red-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold">✘</div>
-                    <p class="mt-2 text-lg text-white"><span id="miss-counter" class="value">0</span></p>
-                </div>
-            </div>
-
-            <!-- Botón de Menú Principal -->
-            <a href="index.html" class="mt-6 px-6 py-3 bg-[#8B97C7] text-white text-lg font-bold rounded-full hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition">
-                Menú Principal
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Astro Sinónimos</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap"
+            rel="stylesheet"
+        />
+        <link href="src/output.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+        <script type="module" src="src/main.js"></script>
+    </head>
+    <body class="grid grid-cols-12 gap-4 px-20">
+        <header class="col-span-10 col-start-2 bg-header p-1" role="banner">
+            <a href="index.html">
+                <img
+                    class="h-12"
+                    src="src/assets/logo_usakids.png"
+                    alt="Logo UsaKids"
+                    tabindex="0"
+                />
             </a>
+        </header>
+        <main
+            class="col-span-10 col-start-2 grid grid-cols-2 gap-4 flex-col"
+            role="main"
+        >
+            <section
+                class="col-span-6 p-2 rounded-xl flex flex-col items-center justify-center"
+                aria-label="Juego"
+            >
+                <div
+                    id="phaser-container"
+                    tabindex="0"
+                    role="application"
+                    aria-label="Zona de juego"
+                ></div>
+            </section>
+            <section
+                class="bg-cover bg-center bg-no-repeat col-span-4 col-start-7 p-6 rounded-xl flex flex-col items-center bg-space-background bg-cover"
+                aria-labelledby="player-name"
+            >
+                <img
+                    src="src/assets/avatar.png"
+                    alt="Avatar del jugador"
+                    class="w-24 h-24 rounded-full mb-4"
+                    tabindex="0"
+                />
+                <h2 id="player-name" class="text-xl font-bold text-green-300">
+                    Cristian Zambrano
+                </h2>
 
-        </section>
-    </main>
-    <footer class="col-start-2 col-span-10 flex bg-footer items-center" role="contentinfo">
-        <div class="flex gap-4" role="navigation" aria-label="Redes sociales">
-            <a href="#" tabindex="0"><img src="src/assets/fb.png" alt="Facebook" class="w-8 h-8" /></a>
-            <a href="#" tabindex="0"><img src="src/assets/lin.png" alt="LinkedIn" class="w-8 h-8" /></a>
-            <a href="#" tabindex="0"><img src="src/assets/youtube.png" alt="YouTube" class="w-8 h-8" /></a>
-        </div>
-        <div class="flex-1 text-center">
-            <p class="font-ibm-plex-mono text-white" tabindex="0">
-                UsaKids®<br />
-                Derechos sin reservar<br />
-                2024
-            </p>
-        </div>
-    </footer>
-</body>
+                <!-- Barra de progreso accesible -->
+                <div
+                    class="w-full bg-white rounded-full h-4 mt-4"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    aria-label="Progreso del jugador"
+                >
+                    <div
+                        id="progress-bar"
+                        class="bg-purple-600 h-4 rounded-full"
+                        tabindex="0"
+                        style="width: 0%"
+                    ></div>
+                </div>
+
+                <div
+                    class="flex gap-4 mt-6"
+                    role="group"
+                    aria-label="Marcador de puntuación"
+                >
+                    <div
+                        class="flex flex-col items-center"
+                        tabindex="0"
+                        role="status"
+                        aria-label="Aciertos"
+                    >
+                        <div
+                            class="bg-green-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold"
+                        >
+                            ✓
+                        </div>
+                        <p class="mt-2 text-lg text-white">
+                            <span id="hit-counter" class="value">0</span>
+                        </p>
+                    </div>
+                    <div
+                        class="flex flex-col items-center"
+                        tabindex="0"
+                        role="status"
+                        aria-label="Errores"
+                    >
+                        <div
+                            class="bg-red-500 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold"
+                        >
+                            ✘
+                        </div>
+                        <p class="mt-2 text-lg text-white">
+                            <span id="miss-counter" class="value">0</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Botón de Menú Principal -->
+                <a
+                    href="/index.html"
+                    class="mt-6 px-6 py-3 bg-blue-700 text-white text-lg font-bold rounded-full hover:bg-blue-900 focus:ring-4 focus:ring-blue-300 transition"
+                >
+                    Menú Principal
+                </a>
+            </section>
+        </main>
+        <footer
+            class="col-start-2 col-span-10 flex bg-footer items-center"
+            role="contentinfo"
+        >
+            <div
+                class="flex gap-4"
+                role="navigation"
+                aria-label="Redes sociales"
+            >
+                <a href="#" tabindex="0"
+                    ><img
+                        src="src/assets/fb.png"
+                        alt="Facebook"
+                        class="w-8 h-8"
+                /></a>
+                <a href="#" tabindex="0"
+                    ><img
+                        src="src/assets/lin.png"
+                        alt="LinkedIn"
+                        class="w-8 h-8"
+                /></a>
+                <a href="#" tabindex="0"
+                    ><img
+                        src="src/assets/youtube.png"
+                        alt="YouTube"
+                        class="w-8 h-8"
+                /></a>
+            </div>
+            <div class="flex-1 text-center">
+                <p class="font-ibm-plex-mono text-white" tabindex="0">
+                    UsaKids®<br />
+                    Derechos sin reservar<br />
+                    2024
+                </p>
+            </div>
+        </footer>
+    </body>
 </html>
