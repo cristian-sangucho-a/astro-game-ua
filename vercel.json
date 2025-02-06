@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+        {
+            "source": "/astro_sinonimos",
+            "destination": "/astro_sinonimos.html"
+        },
+        { "source": "/juegoSinonimos", "destination": "/juegoSinonimos.html" }
+    ]
+}
