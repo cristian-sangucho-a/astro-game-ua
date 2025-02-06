@@ -1,9 +1,15 @@
 {
-    "rewrites": [
+    "builds": [
         {
-            "source": "/astro_sinonimos",
-            "destination": "/astro_sinonimos.html"
-        },
-        { "source": "/juegoSinonimos", "destination": "/juegoSinonimos.html" }
+            "src": "package.json",
+            "use": "@vercel/static-build",
+            "config": { "distDir": "dist" }
+        }
+    ],
+    "routes": [
+        {
+            "src": "/(.*)",
+            "dest": "/$1"
+        }
     ]
 }
