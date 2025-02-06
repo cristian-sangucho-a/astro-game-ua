@@ -12,7 +12,7 @@ export default {
                 },
             },
             backgroundImage: {
-                "space-background": "url('/src/assets/espacio-fondo.jpg')",
+                "space-background": "url('/public/assets/espacio-fondo.jpg')",
             },
             fontFamily: {
                 "ibm-plex-mono": ['"IBM Plex Mono"', "monospace"],
